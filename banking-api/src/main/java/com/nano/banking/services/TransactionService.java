@@ -66,6 +66,8 @@ public class TransactionService implements ITransactionService {
                 public final String paymentMethod = transaction.getPaymentMethod();
             };
 
+            TransactionResponse transactionResponse = transactionMapper.toTransactionResponse(transaction);
+
             var paymentApiResponse = webClient
                     .post()
                     .uri("/api/v1/payments/process")
@@ -74,8 +76,8 @@ public class TransactionService implements ITransactionService {
                     .bodyToMono(ApiResponse.class)
                     .block();
 
-            if (paymentApiResponse != null && paymentApiResponse.isSuccess()) {
-                return new ApiResponse<TransactionResponse>(true, "Transaction processing", null, null);
+            if (paymentApiResponse != null && paymentApiResponse.getIsSuccess()) {
+                return new ApiResponse<TransactionResponse>(true, "Transaction processing", transactionResponse, null);
             } else {
                 transaction.setStatus(TransactionStatus.FAILED.toString());
                 transactionRepository.save(transaction);
