@@ -33,18 +33,18 @@ public class CallbackService implements ICallbackService {
     @Override
     public void processPaymentCallback(PaymentCallbackRequest callbackData) {
         log.info("Processing payment callback: {}", callbackData);
-        simulatePaymentGatewayCallback(callbackData.getPaymentId());
+        simulatePaymentGatewayCallback(callbackData.getPaymentId(), callbackData.getTransactionReference());
     }
 
     @Async
-    protected void simulatePaymentGatewayCallback(UUID paymentId) {
+    protected void simulatePaymentGatewayCallback(UUID paymentId, String gatewayReference) {
         try {
             // Simulate gateway processing delay (2-5 seconds)
             int delay = 2000 + random.nextInt(3000);
             Thread.sleep(delay);
 
             // Generate random callback response
-            PaymentCallbackRequest callback = generateRandomCallback(paymentId);
+            PaymentCallbackRequest callback = generateRandomCallback(paymentId, gatewayReference);
 
             log.info("Simulated callback for payment {}: Status={}, Message={}",
                     paymentId, callback.getStatus(), callback.getMessage());
@@ -61,7 +61,7 @@ public class CallbackService implements ICallbackService {
         }
     }
 
-    private PaymentCallbackRequest generateRandomCallback(UUID paymentId) {
+    private PaymentCallbackRequest generateRandomCallback(UUID paymentId, String gatewayReference) {
         // 70% success, 20% failed, 5% pending, 5% timeout
         double rand = random.nextDouble();
         String status;
@@ -81,9 +81,6 @@ public class CallbackService implements ICallbackService {
             message = "Payment gateway timeout - retry required";
         }
 
-        String gatewayReference = String.format("GTW-%d-%s",
-                System.currentTimeMillis(),
-                UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
         return new PaymentCallbackRequest(paymentId, status, gatewayReference, message);
     }
