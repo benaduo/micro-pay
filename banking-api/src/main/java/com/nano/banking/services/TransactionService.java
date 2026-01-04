@@ -93,7 +93,19 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public ApiResponse<TransactionResponse> getTransactionByReferenceNumber(String transactionId) {
-        return null;
+    public ApiResponse<TransactionResponse> getTransactionByReferenceNumber(String referenceNumber) {
+        try {
+            log.debug("Fetching transaction with reference number: {}", referenceNumber);
+            Transaction transaction = transactionRepository.findByReferenceNumber(referenceNumber);
+            if (transaction == null) {
+                log.error("Transaction not found for reference number: {}", referenceNumber);
+                return new ApiResponse<>(false, "Transaction not found", null, "TRANSACTION_NOT_FOUND");
+            }
+            TransactionResponse response = transactionMapper.toTransactionResponse(transaction);
+            return new ApiResponse<>(true, "Transaction retrieved successfully", response, null);
+        } catch (Exception e) {
+            log.error("Error retrieving transaction: {}", e.getMessage());
+            return new ApiResponse<>(false, "Failed to retrieve transaction", null, "TRANSACTION_RETRIEVAL_ERROR");
+        }
     }
 }
