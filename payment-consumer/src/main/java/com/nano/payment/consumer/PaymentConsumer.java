@@ -19,8 +19,12 @@ public class PaymentConsumer {
 
     @KafkaListener(topics = "${kafka.topics.payment-callbacks}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumePaymentCallback(PaymentCallbackRequest message) {
-        log.info("Received message: {}", message);
-        System.out.println("Received PaymentCallbackRequest: " + message);
-        paymentConsumerService.processPaymentCallback(message);
+        try {
+            log.info("Received message: {}", message);
+            System.out.println("Received PaymentCallbackRequest: " + message);
+            paymentConsumerService.processPaymentCallback(message);
+        } catch (Exception e) {
+            log.error("Error processing PaymentCallbackRequest", e);
+        }
     }
 }
