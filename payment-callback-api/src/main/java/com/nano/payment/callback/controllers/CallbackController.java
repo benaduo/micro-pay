@@ -1,6 +1,7 @@
 package com.nano.payment.callback.controllers;
 
 import com.nano.payment.callback.services.ICallbackService;
+import com.nano.shared.dtos.ApiResponse;
 import com.nano.shared.dtos.PaymentCallbackRequest;
 import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,7 @@ public class CallbackController {
 
     @PostMapping
     @PermitAll
-    public ResponseEntity<Void> callback(@RequestBody PaymentCallbackRequest paymentCallbackRequest) {
-        callbackService.processPaymentCallback(paymentCallbackRequest);
-        return ResponseEntity.ok().build();
+    public ApiResponse<Void> callback(@RequestBody PaymentCallbackRequest paymentCallbackRequest) {
+        return callbackService.processPaymentCallback(paymentCallbackRequest);
     }
 }

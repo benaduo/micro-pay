@@ -1,5 +1,6 @@
 package com.nano.payment.callback.services;
 
+import com.nano.shared.dtos.ApiResponse;
 import com.nano.shared.dtos.PaymentCallbackRequest;
 import com.nano.shared.enums.TransactionStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +32,10 @@ public class CallbackService implements ICallbackService {
     }
 
     @Override
-    public void processPaymentCallback(PaymentCallbackRequest callbackData) {
+    public ApiResponse<Void> processPaymentCallback(PaymentCallbackRequest callbackData) {
         log.info("Processing payment callback: {}", callbackData);
         simulatePaymentGatewayCallback(callbackData.getPaymentId(), callbackData.getTransactionReference());
+        return new ApiResponse<>(true, "Payment callback processing initiated", null, null);
     }
 
     @Async
