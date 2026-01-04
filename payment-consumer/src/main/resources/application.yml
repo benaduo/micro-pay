@@ -19,9 +19,12 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.nano.shared.dtos.PaymentCallbackRequest
       group-id: payment-callback-group
-      auto-offset-reset: latest
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
 
 kafka:
   topics:
@@ -30,3 +33,8 @@ kafka:
 server:
   port: 8084
 
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
+    com.nano.payment.consumer: DEBUG
