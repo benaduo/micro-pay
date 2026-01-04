@@ -12,6 +12,10 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/sqldialects.xml
+.idea/data_source_mapping.xml
+.idea/dataSources.xml
+.idea/jpa.xml
 
 ### Eclipse ###
 .apt_generated

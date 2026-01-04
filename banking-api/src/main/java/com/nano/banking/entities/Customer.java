@@ -18,20 +18,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Customer extends BaseEntity {
-    @Column("first_name")
     private String firstName;
-    @Column("last_name")
     private String lastName;
-    @Column("email")
     private String email;
-    @Column("phone_number")
     private String phoneNumber;
-    @Column("address")
     private String address;
-    @Column("account_id")
     private UUID accountId;
-    @Column("fineract_account_id")
     private Long fineractAccountId;
-    @Column("fineract_client_id")
     private Long fineractClientId;
 }

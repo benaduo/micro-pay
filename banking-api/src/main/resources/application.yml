@@ -6,7 +6,7 @@ spring:
     name: banking-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/banking_db
+    url: jdbc:postgresql://localhost:5432/nano_banking_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -38,8 +38,8 @@ spring:
     properties:
       spring.json.trusted.packages: "com.nano.shared"
 
-payment:
-  service:
+services:
+  payment:
     url: http://localhost:8082
 
 

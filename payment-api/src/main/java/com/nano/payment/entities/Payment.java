@@ -1,26 +1,25 @@
-package com.nano.banking.entities;
+package com.nano.payment.entities;
 
 import com.nano.shared.entities.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Entity
-@Table(name = "transactions")
+@Table(name = "payments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Transaction extends BaseEntity {
+public class Payment extends BaseEntity {
+    private String accountId;
+    private String referenceNumber;
+    private String transactionDescription;
     private Double amount;
     private String paymentMethod;
-    private String description;
-    private String transactionType;
-    private UUID accountId;
-    private String referenceNumber;
     private String status;
+    private String externalTransactionDescription;
 }
