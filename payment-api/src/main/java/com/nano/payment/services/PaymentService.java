@@ -6,6 +6,7 @@ import com.nano.payment.entities.Payment;
 import com.nano.payment.mappers.PaymentMapper;
 import com.nano.payment.repositories.PaymentRepository;
 import com.nano.shared.dtos.ApiResponse;
+import com.nano.shared.dtos.PaymentCallbackRequest;
 import com.nano.shared.enums.TransactionStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,16 +36,15 @@ public class PaymentService implements IPaymentService {
             paymentRepository.save(payment);
 
 
-            /// Make call to external service to process payment
-            var paymentRequest = new Object() {
-                public String paymentId = payment.getId().toString();
-                public String transactionReference = request.getReferenceNumber();
-                public Double amount = request.getAmount();
-            };
+            /// Make call to callback service to process payment
+            var callbackRequest = new PaymentCallbackRequest();
+            callbackRequest.setPaymentId(payment.getId());
+            callbackRequest.setStatus(TransactionStatus.PROCESSING.toString());
+            callbackRequest.setTransactionReference(payment.getReferenceNumber());
             var response =
                     webClient
                             .post()
-                            .bodyValue(paymentRequest)
+                            .bodyValue(callbackRequest)
                             .retrieve()
                             .bodyToMono(ApiResponse.class)
                             .block();

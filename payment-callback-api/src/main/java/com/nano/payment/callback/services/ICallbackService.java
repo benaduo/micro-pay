@@ -1,0 +1,7 @@
+package com.nano.payment.callback.services;
+
+import com.nano.shared.dtos.PaymentCallbackRequest;
+
+public interface ICallbackService {
+    void processPaymentCallback(PaymentCallbackRequest callbackData);
+}
